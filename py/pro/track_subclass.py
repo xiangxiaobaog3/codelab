@@ -11,7 +11,7 @@ class SubclassTracker(type):
                 return
         except NameError:
             return
-        TrackedClass._registry.append(cls)
+        cls._registry.append(cls)
 
 class TrackedClass(object):
     __metaclass__ = SubclassTracker
