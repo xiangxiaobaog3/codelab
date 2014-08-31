@@ -1,0 +1,44 @@
+暂存
+====
+git stash
+git checkout <new_branch>
+git checkout <original_branch>
+git stash pop
+
+显示版本库的位置
+================
+git rev-parse --git-dir
+
+显示工作区根目录
+git rev-parse --show-toplevel
+
+HEAD
+
+master
+
+^ 可以指代父提交
+~ 指代祖先提交
+
+维持HEAD指向不变，用branch所指向的提交中的 filename 替换暂存区和工作区相应的文件
+git checkout branch -- filename
+
+删除不再引用的对象
+git fsck
+git prune
+
+set remote a new address
+git remote set-url new-remote file://xxx.git 
+git remote set-url --push new-remote file://xxx.git 
+
+submodule
+
+
+git init --bare 
+git submodule add 
+更新完代码要执行下这二步
+git submodule init
+git submodule update
+更新最新的 submodule 的命令行是
+git submodule  foreach git pull  origin master
+这些命令都需要在项目的根路径下执行
+
