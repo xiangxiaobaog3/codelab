@@ -1,0 +1,90 @@
+DEBUG:root:This message should go to the log file
+DEBUG:root:This message should go to the log file
+DEBUG:root:This message should go to the log file
+DEBUG:root:This message should go to the log file
+DEBUG:root:This message should go to the log file
+DEBUG:root:This message should go to the log file
+DEBUG:root:This message should go to the log file
+DEBUG:MyLogger:i = 0
+DEBUG:MyLogger:i = 1
+DEBUG:MyLogger:i = 2
+DEBUG:MyLogger:i = 3
+DEBUG:MyLogger:i = 4
+DEBUG:MyLogger:i = 5
+DEBUG:MyLogger:i = 6
+DEBUG:MyLogger:i = 7
+DEBUG:MyLogger:i = 8
+DEBUG:MyLogger:i = 9
+DEBUG:MyLogger:i = 10
+DEBUG:MyLogger:i = 11
+DEBUG:MyLogger:i = 12
+DEBUG:MyLogger:i = 13
+DEBUG:MyLogger:i = 14
+DEBUG:MyLogger:i = 15
+DEBUG:MyLogger:i = 16
+DEBUG:MyLogger:i = 17
+DEBUG:MyLogger:i = 18
+DEBUG:MyLogger:i = 19
+DEBUG:root:This message should go to the log file
+DEBUG:MyLogger:i = 0
+DEBUG:MyLogger:i = 1
+DEBUG:MyLogger:i = 2
+DEBUG:MyLogger:i = 3
+DEBUG:MyLogger:i = 4
+DEBUG:MyLogger:i = 5
+DEBUG:MyLogger:i = 6
+DEBUG:MyLogger:i = 7
+DEBUG:MyLogger:i = 8
+DEBUG:MyLogger:i = 9
+DEBUG:MyLogger:i = 10
+DEBUG:MyLogger:i = 11
+DEBUG:MyLogger:i = 12
+DEBUG:MyLogger:i = 13
+DEBUG:MyLogger:i = 14
+DEBUG:MyLogger:i = 15
+DEBUG:MyLogger:i = 16
+DEBUG:MyLogger:i = 17
+DEBUG:MyLogger:i = 18
+DEBUG:MyLogger:i = 19
+DEBUG:root:This message should go to the log file
+DEBUG:MyLogger:i = 0
+DEBUG:MyLogger:i = 1
+DEBUG:MyLogger:i = 2
+DEBUG:MyLogger:i = 3
+DEBUG:MyLogger:i = 4
+DEBUG:MyLogger:i = 5
+DEBUG:MyLogger:i = 6
+DEBUG:MyLogger:i = 7
+DEBUG:MyLogger:i = 8
+DEBUG:MyLogger:i = 9
+DEBUG:MyLogger:i = 10
+DEBUG:MyLogger:i = 11
+DEBUG:MyLogger:i = 12
+DEBUG:MyLogger:i = 13
+DEBUG:MyLogger:i = 14
+DEBUG:MyLogger:i = 15
+DEBUG:MyLogger:i = 16
+DEBUG:MyLogger:i = 17
+DEBUG:MyLogger:i = 18
+DEBUG:MyLogger:i = 19
+DEBUG:root:This message should go to the log file
+DEBUG:MyLogger:i = 0
+DEBUG:MyLogger:i = 1
+DEBUG:MyLogger:i = 2
+DEBUG:MyLogger:i = 3
+DEBUG:MyLogger:i = 4
+DEBUG:MyLogger:i = 5
+DEBUG:MyLogger:i = 6
+DEBUG:MyLogger:i = 7
+DEBUG:MyLogger:i = 8
+DEBUG:MyLogger:i = 9
+DEBUG:MyLogger:i = 10
+DEBUG:MyLogger:i = 11
+DEBUG:MyLogger:i = 12
+DEBUG:MyLogger:i = 13
+DEBUG:MyLogger:i = 14
+DEBUG:MyLogger:i = 15
+DEBUG:MyLogger:i = 16
+DEBUG:MyLogger:i = 17
+DEBUG:MyLogger:i = 18
+DEBUG:MyLogger:i = 19

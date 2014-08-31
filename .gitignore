@@ -1,0 +1,9 @@
+*.py[co]
+*.zip
+*.tgz
+*.gz
+*.tar.gz
+*.tbz2
+*.tar.bz2
+*.o
+.netrwhist

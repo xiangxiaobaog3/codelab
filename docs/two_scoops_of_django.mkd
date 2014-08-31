@@ -1,0 +1,96 @@
+## Core Concepts
+
+1. Keep it simple, stupid
+2. Fat models, helper modules, thin views, stupid templates
+3. Start with django by default
+4. Stand on the shoulders of giants.
+
+## 代码风格
+
+### 最重要的是让你的代码可读
+
+- 避免缩写变量
+- 写出你函数的参数名
+- 给你的类和方法加上文档
+- 将重复的代码重构成函数或方法
+
+PEP8
+
+- 使用4个空格缩进
+- 顶层的函数和类用二个换行来分离
+- 类里的方法用一个换行来分离
+
+Never Code to the IDE -> Coding by Convention
+
+模板标签模块命名约定 -> `<app_name>_tags.py`
+
+write a programs do one thing and do it well
+
+In essence, each app should be tightly focused on its task.
+
+## Model practices
+
+- South for database migration
+- django-model-utils
+- django-extensions
+
+- 有必要就要增加索引
+- 索引分析 index analysis
+
+## Django Model Design
+
+- start normalized
+
+Try to keep business logic out of views
+
+move business out of views, model method, manager method, utils helper
+
+## Best pratices for class-based views
+
+Method Resolution Order: proceeds from left to right
+
+- The base view classes provieded by Django always go to the right
+- Mixins go to the left of the base view.
+- Mixins should inherit from Python's built-in object type
+
+## Form
+- Form, ModelForm
+- customize Form
+- form validators workflow -> `is_bound`,`clean_full`, `clean_field`
+
+## RestFul
+
+- django-tastypie
+- django-rest-framework
+- django-braces
+
+## 模板最佳实践
+
+- 最小化原则: 逻辑更多放在py里面
+- 二层结构: `base.html` 
+- 三层结构: `base.html`, `base_<app_name>.html`
+- Flat is better than nested
+- settings: `TEMPLATE_STRING_IF_INVALID = "INVALID EXPRESSION: %s"`
+
+## Tradeoffs of replacing core components
+## Working with the django-admin
+## Dealing with the User Model
+
+## Tests
+
+### Each test method tests one thing
+
+### Finding and reducing bottle-necks
+
+## Security
+- always use https: 特别是基于cookie-session的架构,用于保证cookie不被盗窃
+- Use secure cookies
+
+## Logging
+- packages:
+  1. django-admin-honeypot
+  2. sentry
+
+## Signals
+
+- Using custom model manager method instead of signals

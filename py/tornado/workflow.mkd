@@ -1,0 +1,60 @@
+## How Web Server Works ##
+
+- Create socket
+- Bind socket
+- Listen on socket
+  - **Accept** new connection from a client
+  - **Receive** data from the client
+  - Process the request somehow
+  - **Send** response to the client
+- Wait for a new connection
+
+## Server socket Loop ##
+
+Thress options: 
+
+- dispatch a thread to handle client socket
+- create a new process to handle client socket
+- use non-blocking sockets, and multiplex between our server socket and
+  any active client sockets using select
+
+
+## Sockets - Blocking vs Non-blocking ##
+
+- Blocking sockets - socket API calls with block indefinitely
+  until the requested action (`send`, `recv`, `conect` or `accept`) has been
+  performed.
+- Non-blocking sockets - `send`, `recv`, `connect` and `accept` can return
+  immediately without having done anying.
+- In Python, you can use `socket.setblocking(0)` to make a socket 
+  non-blocking
+
+use select.
+
+
+## select ##
+
+- A system call - allows a program to monitor multiple file descriptors,
+  waiting until one or more of the file descriptors become "ready" for 
+  some class of I/O operation
+- More info $ man select
+- Python's select() function is a direct interface to the underlying 
+  operation system implementation.
+
+## poll ##
+- `poll()` scales better than `select()`
+- `poll()` - only requires listing the file descriptos of interest
+   while `select` builds a bitmap, turns on bits for the `fds` of
+   interest, and then afterward the whole bitmap has to be linearly
+   scaned again.
+
+## epoll ##
+- `epoll()` system call has event notification facility.
+
+异步IO，事件循环
+
+1. 请求 x.html
+2. 接收请求,调用一个函数从磁盘获取 x.html
+3. 当 webserver 等待文件被取回的时候，它可以继续处理下一个请求
+4. 当文件取回后，有一个回调函数插入到了 webserver 的队列中
+5. webserver 执行该回调函数，渲染 x.html 发送给浏览器

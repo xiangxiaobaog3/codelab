@@ -1,0 +1,6 @@
+Broker vs Brokerless
+
+Borker: 经纪人模式
+- 程序只需要知道中间的broker位置,broker基于业务逻辑("queue name", "routing key", "topic", "message properties" 等) 路由消息
+- 消息发送者和接收者可以不用同时存 
+- broker model is to some extent resistant to the application failure. 

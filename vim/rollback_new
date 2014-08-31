@@ -1,0 +1,221 @@
+#!/bin/sh
+
+basedir=$(dirname $0)
+source $basedir/defs
+
+usage()
+{   
+    echo "OPTIONS "
+    echo " --date | -d [yyyymmdd]"
+    echo "   The date to roll back"
+    echo " --table | -t \"fate equip xxx yyy\""
+    echo "   The table names in mysql"
+    echo " --rids | -r \"123445 34545\""
+    echo "   The player's rids(which is the primary key)"
+    echo " --copper | -c"
+    echo "   wheather or not roll back copper"
+    echo " --rmbgold | -g"
+    echo "   wheather or not roll back rmbgold"
+    echo " --help | -h"
+    echo "   Display this help and exit"
+}
+
+tname=""
+rids=""
+date=""
+rollback_copper=0
+rollback_rmbgold=0
+
+args=`getopt -o cgt:r:d:h -l table:,rids:,date:,help -- "$@"`
+
+if [ $? != 0 ]
+then 
+    echo "Terminating..." >&2 ; exit 1 ; 
+fi
+
+eval set -- "$args"
+
+while true 
+do
+    case "$1" in
+        -t|--table)
+            tname=$2
+            shift 2
+            ;;
+        -r|--rids)
+            rids=$2
+            shift 2
+            ;;
+        -d|--date)
+            date=$2
+            shift 2
+            ;;
+        -h|--help) 
+            usage 
+            shift
+            exit 0
+            ;;
+        -c) 
+            rollback_copper=1
+            shift
+            ;;
+        -g)
+            rollback_rmbgold=1
+            shift
+            ;;
+        --) 
+            shift
+            break
+            ;;
+        *) 
+            echo "$@"
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+if [ -z "$date" ]
+then
+    echo "date not found!!!"
+    usage
+    exit 1
+elif [ -z "$tname" ]
+then
+    echo "table not found!!!"
+    usage
+    exit 1
+elif [ -z "$rids" ]
+then
+    echo "rids not found!!!"
+    usage
+    exit 1
+fi
+
+if [ ! -d ~/backup_work ]
+then
+    mkdir ~/backup_work
+fi
+
+agent=`echo $YESGUO_RELEASE_ROOT | grep -Po "\w+_" | grep -Po "[^_]+"`
+sid=`echo $YESGUO_RELEASE_ROOT | grep -Po "_s\d+" | grep -Po "\d+"`
+
+redis_port=`grep -Po "redisport\=\"?\d+\"?" $YESGUO_GAME_ROOT/baseConf.lua | grep -Po "\d+"`
+dbpwd=`grep -Po "dbpwd\=\"?\w+\"?" $YESGUO_GAME_ROOT/baseConf.lua | grep -Po "\"\w+\"" | grep -Po "\w+"`
+
+backup_path=`ls /data/backup/game/db/${agent}_s$sid/${date}*/sjsg%$agent%s$sid%${agent}_s$sid%*`
+backup_file=${backup_path##*/}
+
+if [ -z $backup_path ]
+then
+    echo "backup file not found!"
+    exit 1
+fi
+
+rm -rf ~/backup_work/*
+cd ~/backup_work
+cp $backup_path .
+tar zxf $backup_file
+
+backup_dir=`ls -d */ | grep -Po "[^/]+"`
+
+#check rids exsist
+cd ~/backup_work/$backup_dir
+for rid in $rids
+do
+    player_content=`grep -P "^$rid" Player.txt`
+    if [ -z "$player_content" ]
+    then
+        echo "player $rid not found!"
+        exit 0
+    fi
+
+    line_count=`echo "$player_content" | wc -l`
+    if [ ! $line_count -eq 1 ]
+    then
+        echo "player $rid match multi lines!"
+        exit 0
+    fi
+done
+
+for tb in $tname
+do
+    tb_file=`ls $tb.txt`
+    if [ -z $tb_file ]
+    then
+        echo "table $tb not found!"
+        exit 0
+    fi
+done
+
+echo "ready to roll back: "
+echo "agent: $agent"
+echo "sid: $sid"
+echo "rids: $rids"
+echo "date: $date"
+echo "tables: $tname"
+echo "redis port: $redis_port"
+echo "dbpwd: $dbpwd"
+echo "backup_path: $backup_path"
+
+if [ $rollback_copper -eq 1 ]
+then
+    echo "copper: yes"
+else
+    echo "copper: no"
+fi
+
+if [ $rollback_rmbgold -eq 1 ]
+then
+    echo "rmbgold: yes"
+else
+    echo "rmbgold: no"
+fi
+
+# no more interactive
+# read -p "are you sure: (yes/no)? " answer
+# if [ "$answer" != "yes" ]
+# then
+#     echo "faild!"
+#     exit 1
+# fi
+
+for rid in $rids
+do
+    echo "-----------------> roll back $rid: "
+    for tb in $tname
+    do
+        echo "redis-cli -p $redis_port del $tb:$rid"
+        redis-cli -p $redis_port del $tb:$rid
+    done
+
+    cd ~/backup_work/$backup_dir
+    for tb in $tname
+    do
+        grep -P "^$rid" $tb.txt > ../$tb.txt
+    done
+
+    cd ~/backup_work
+    for tb in $tname
+    do
+       mysqlimport --local -r -uroot -p$dbpwd ${agent}_s$sid $tb.txt
+    done
+    
+    if [ $rollback_copper -eq 1 ]
+    then
+        cd ~/backup_work/$backup_dir
+        copper=`grep -P "^$rid" Player.txt | grep -Po "copper\=\"\d+\"" | grep -Po "\d+"`
+        echo "redis-cli -p $redis_port hset Player:$rid copper $copper"
+        redis-cli -p $redis_port hset Player:$rid copper $copper
+    fi
+
+    if [ $rollback_rmbgold -eq 1 ]
+    then
+        cd ~/backup_work/$backup_dir
+        rmbgold=`grep -P "^$rid" Player.txt | grep -Po "rmbgold\=\"\d+(.\d+)*\"" | grep -Po "\d+(.\d+)*"`
+        echo "redis-cli -p $redis_port hset Player:$rid rmbgold $rmbgold"
+        redis-cli -p $redis_port hset Player:$rid rmbgold $rmbgold
+    fi
+done
+
+

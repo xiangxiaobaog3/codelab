@@ -1,0 +1,11 @@
+# Bootstrap #
+
+1. 响应式设计
+    1.1. 768px -> 64px * 12
+
+## Grid System ##
+
+- Rows must be placed within a `.container` for proper alignment and padding
+- use rows to create horizontal groups of columns.
+- Content should be placed within columns, and only columns may be immediate
+  children of rows

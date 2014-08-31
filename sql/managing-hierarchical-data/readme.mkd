@@ -1,0 +1,25 @@
+The Adjacency List Model
+
+在相邻列表模型,每一组数据都包含一个指针指向它的父亲,最上层的item的父指针是NULLk
+
+Modified preorder tree traversal algorithm
+
+When working with a tree, we work from left to right, one layer at a time, descending to each node's children before assigning
+a right-hand number and moving on to the right. This approach is called the modified preorder tree traversal algorithm.
+
+节点左边/右边的数值永远都是处于父节点的左边和右边值的区间内, 通过 这样可以找出一颗树
+
+```
+SELECT node.name
+FROM nested_category AS node,
+     nested_category AS parent
+     WHERE node.lft BETWEEN parent.lft AND parent.rgt
+     AND parent.name = 'ELECTRONICS'
+     ORDER BY node.lft;
+```
+
+找出所有左边的叶子节点
+
+子找到顶层父的路径
+
+找出节点的深度

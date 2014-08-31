@@ -1,0 +1,17 @@
+# Redis #
+
+## 数据库 ##
+
+## 数据类型 ##
+
+
+O(1) 常量级
+O(log(n)) divide and conquer
+O(N) 线性级
+O(N + M*(log(M))) sort command
+O(log(N) + M) zremrangebyscore
+O(N^2)
+O(C^N)
+
+redis 每一个命令都是原子的, redis 使用多个命令时可以支持事物机制的，因为
+redis 是单线成的,保证了每次操作只有一条命令在执行

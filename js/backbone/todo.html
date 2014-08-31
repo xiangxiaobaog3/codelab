@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Backbone.js • TodoMVC</title>
+  <link rel="stylesheet" href="assets/base.css">
+</head>
+<body>
+
+  <section id="todoapp">
+
+    <header id="header">
+      <h1>todos</h1>
+      <input type="text" placeholder="What needs to be done?" autofocus id="new-todo">
+    </header>
+
+    <section id="main">
+      <input type="checkbox" id="toggle-all">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul id="todo-list"></ul>
+    </section>
+
+    <footer id="footer"></footer>
+  </section>
+
+  <div id="info">
+    <p>Double-click to edit a todo</p>
+  </div>
+
+  <script type="text/template" id="item-template">
+    <div class="view">
+      <input type="checkbox" class="toggle" <%= completed ? 'checked' : '' %>>
+      <label><%- title %></label>
+      <button class="destory"></button>
+    </div>
+    <input type="text" class="edit" value="<%- title %>">
+  </script>
+
+  <script type="text/template" id="stats-template">
+    <span id="todo-count">
+      <strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %>
+    </span>
+    <ul id="filters">
+      <li><a href="#/" class="selected">All</a></li>
+      <li><a href="#/active">Active</a></li>
+      <li><a href="#/completed">Completed</a></li>
+    </ul>
+    <% if (completed) { %>
+      <button id="clear-completed">Clear completed (<%= completed %>)</button>
+    <% } %>
+  </script>
+
+  <script src="js/lib/jquery.min.js"></script>
+  <script src="js/lib/underscore-min.js"></script>
+  <script src="js/lib/backbone-min.js"></script>
+  <script src="js/lib/backbone.localStorage.js"></script>
+  <script src="js/models/todo.js"></script>
+  <script src="js/collections/todos.js"></script>
+<!--  <script src="js/views/todos.js"></script>-->
+<!--  <script src="js/views/app.js"></script>-->
+  <script src="js/routers/router.js"></script>
+<!--  <script src="js/app.js"></script>-->
+<script>
+  // Backbone.sync = function(method, model) {
+  //   alert(method + ": " + model.url);
+  // };
+  var todos = new Backbone.Collection();
+  todos.url = '/todos.json';
+  var othertodo = todos.create({id: 3, title: "wwww"});
+
+  var Workspace = Backbone.Router.extend({
+    routes: {
+    "help": "help", // #help
+    "search/:query": "search", // #search/kiwis
+    "search/:query/p:page": "search" // #search/kiwis/p7
+  },
+  help: function() {
+    console.log("help function");
+  },
+  search: function(query, page) {
+    console.log(query + page);
+  }
+  });
+  router = new Workspace();
+  router.on("router:help", function(page) {
+    console.log("router: help" + page);
+  });
+
+  var ItemView = Backbone.View.extend({
+    tagName: 'li'
+  });
+
+  var BodyView = Backbone.View.extend({
+    el: 'body'
+  });
+  var item = new ItemView();
+  var body = new BodyView();
+
+  console.log(item.el + ' ' + body.el);
+
+  var b1 = $('<button></button>');
+  var b2 = $('<button></button>');
+
+  // Define a new view
+  var View = Backbone.View.extend({
+    events: {
+      click: function(e) {
+        console.log(view.el === e.target);
+      }
+    }
+  });
+
+  var view = new View({el: b1});
+  view.setElement(b2);
+  b1.trigger('click');
+  b2.trigger('click');
+
+  var Todos = Backbone.Collection.extend({
+//    model: Todo,
+    filterById: function(ids) {
+      return this.models.filter(
+        function(c) {
+          return _.contains(ids, c.id);
+        }
+      );
+    }
+  });
+
+  var ourObject = {};
+
+  // Mixin
+  _.extend(ourObject, Backbone.Events);
+
+  function doAction(action, duration) {
+    console.log("We are " + action + duration);
+  }
+
+  // Add event listeners
+  ourObject.on("dance", doAction);
+  ourObject.on("jump", doAction);
+  ourObject.on("skip", doAction);
+
+  // single event
+  ourObject.trigger("dance", "just dancing.", "5 minutes");
+  ourObject.trigger("dance jump skip", "very tired from so much actions.", "10 minutes");
+
+  var a = _.extend({}, Backbone.Events);
+  var b = _.extend({}, Backbone.Events);
+  var c = _.extend({}, Backbone.Events);
+
+  // add listeners to A for events
+  a.listenTo(b, 'anything', function(event) { console.log("anything happened"); });
+  a.listenTo(c, 'everything', function(event) { console.log("everything happened"); });
+
+  // trigger listening
+  b.trigger('anything');
+  c.trigger("everything");
+  a.remove();
+</script>
+</body>
+</html>
