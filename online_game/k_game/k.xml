@@ -1,0 +1,3 @@
+<method methname="ping" prflow="p2p">
+    <param prtype="qword" prname="timestamp">
+</method>
